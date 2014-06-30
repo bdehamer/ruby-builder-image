@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM ubuntu
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -36,6 +36,7 @@ RUN mkdir /tmp/ruby-package
 RUN make DESTDIR=/tmp/ruby-package install
 
 ADD update-alt.sh /tmp/update-alt.sh
+WORKDIR /tmp
 RUN fpm -s dir -t deb -n ruby2.1.2-wheezy -v 2.1.2p95 -C /tmp/ruby-package -p ruby-VERSION_ARCH.deb -d "build-essential (>= 11.5)" -d "libreadline6 (>= 6.2)" -d "libreadline6-dev (>= 6.2)" -d "libncurses5 (>= 5.9)" -d "libncurses5-dev (>= 5.9)" -d "zlib1g (>= 1.2.7)" -d "libssl-dev (>= 1.0.0)" --after-install /tmp/update-alt.sh usr/bin usr/include usr/lib usr/share
 
 CMD cp /tmp/*.deb /target
